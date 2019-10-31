@@ -13,11 +13,12 @@ func main() {
 		WriteTimeout: 10 * time.Second,
 	}
 	http.HandleFunc("/", Log(HomeHandler))
+	http.HandleFunc("/help", Log(InfoHandler))
 	http.HandleFunc("/request", Log(ClientRequestHandler))
 	http.HandleFunc("/memory", Log(SystemHandler))
 	http.HandleFunc("/return", Log(ReturnCodeHandler))
 	http.HandleFunc("/headers", Log(ReturnHeadersHandler))
 	http.HandleFunc("/health", Log(HealthCheckHandler))
-	http.HandleFunc("/info", Log(InterfacesHandler))
+	http.HandleFunc("/interfaces", Log(InterfacesHandler))
 	log.Fatal(s.ListenAndServe())
 }

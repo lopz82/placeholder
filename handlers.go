@@ -5,7 +5,6 @@ import (
 	"log"
 	"net"
 	"net/http"
-	"os"
 	"strconv"
 
 	"golang.org/x/sys/unix"
@@ -18,6 +17,14 @@ const (
 	GB
 	TB
 )
+
+func HomeHandler(w http.ResponseWriter, r *http.Request) {
+	h, err := GetHostName()
+	if err != nil {
+		log.Println(err)
+	}
+	fmt.Fprint(w, h)
+}
 
 func ReturnHeadersHandler(w http.ResponseWriter, r *http.Request) {
 	param := r.URL.Query()
@@ -46,7 +53,7 @@ func ClientRequestHandler(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-func HomeHandler(w http.ResponseWriter, r *http.Request) {
+func InfoHandler(w http.ResponseWriter, r *http.Request) {
 	fmt.Fprint(w,
 		`Please, use the following urls to access to the available tools:
 /request -> Shows your request headers
@@ -54,7 +61,7 @@ func HomeHandler(w http.ResponseWriter, r *http.Request) {
 /return -> Returns the specified HTTP response status code
 /headers -> Returns the specified headers
 /health -> Health check
-/info -> Host information`)
+/interfaces -> Host information`)
 }
 
 func SystemHandler(w http.ResponseWriter, r *http.Request) {
@@ -75,7 +82,7 @@ func SystemHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func InterfacesHandler(w http.ResponseWriter, r *http.Request) {
-	h, err := os.Hostname()
+	h, err := GetHostName()
 	if err != nil {
 		log.Println(err)
 	}
