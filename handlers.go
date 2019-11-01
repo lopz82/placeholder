@@ -48,8 +48,11 @@ Example: http://host.com//headers?header1=value1&header2=value2`,
 func ClientRequestHandler(w http.ResponseWriter, r *http.Request) {
 	fmt.Fprintf(w, "Remote Address: %s\n", r.RemoteAddr)
 	fmt.Fprintf(w, "Requested URI: %s\n", r.RequestURI)
-	for h, v := range r.Header {
-		fmt.Fprintf(w, "%-s: %v\n", h, v)
+	fmt.Fprintln(w, "Headers:")
+	sortH := sortHeaders(r.Header)
+	max := getLongestHeader(r.Header)
+	for _, h := range sortH {
+		fmt.Fprintf(w, "  %*s: %v\n", max, h, r.Header.Get(h))
 	}
 }
 
